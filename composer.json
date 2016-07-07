@@ -1,0 +1,24 @@
+{
+  "name": "foolkaka/soaphp-framework",
+  "description": "soaphp-framework",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "foolkaka",
+      "email": "foolkaka@hotmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.5.9",
+    "corneltek/getoptionkit": "~1.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "Swoole\\": "src/"
+    },
+    "files": [
+      "swoole.php"
+    ]
+  }
+}
