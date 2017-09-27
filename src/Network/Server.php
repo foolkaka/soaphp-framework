@@ -327,15 +327,10 @@ class Server extends Base implements Driver
             $this->runtimeSetting['task_worker_num'] = intval(self::$options['tasker']);
         }
         $this->sw->set($this->runtimeSetting);
-        $version = str_replace('.', '', SWOOLE_VERSION);
-        //1.7.0
-        if ($version >= 170)
+        $this->sw->on('ManagerStart', function ($serv)
         {
-            $this->sw->on('ManagerStart', function ($serv)
-            {
-                Swoole\Console::setProcessName($this->getProcessName() . ': manager');
-            });
-        }
+            Swoole\Console::setProcessName($this->getProcessName() . ': manager');
+        });
 
         $this->sw->on('Start', array($this, 'onMasterStart'));
         $this->sw->on('Shutdown', array($this, 'onMasterStop'));
@@ -347,7 +342,7 @@ class Server extends Base implements Driver
         $this->sw->on('WorkerStop', array($this->protocol, 'onShutdown'));
 
         //swoole-1.8已经移除了onTimer回调函数
-        if ($version < 18)
+        if (version_compare(SWOOLE_VERSION, '1.8.0') < 0)
         {
             if (is_callable(array($this->protocol, 'onTimer')))
             {
