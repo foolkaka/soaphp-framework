@@ -327,9 +327,9 @@ class Server extends Base implements Driver
             $this->runtimeSetting['task_worker_num'] = intval(self::$options['tasker']);
         }
         $this->sw->set($this->runtimeSetting);
-        $version = explode('.', SWOOLE_VERSION);
+        $version = str_replace('.', '', SWOOLE_VERSION);
         //1.7.0
-        if ($version[1] >= 7)
+        if ($version >= 170)
         {
             $this->sw->on('ManagerStart', function ($serv)
             {
@@ -347,7 +347,7 @@ class Server extends Base implements Driver
         $this->sw->on('WorkerStop', array($this->protocol, 'onShutdown'));
 
         //swoole-1.8已经移除了onTimer回调函数
-        if ($version[1] < 8)
+        if ($version < 18)
         {
             if (is_callable(array($this->protocol, 'onTimer')))
             {
